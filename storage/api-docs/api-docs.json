@@ -1,0 +1,365 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Agenda de Contatos",
+        "description": "Documentação da API de Agenda de Contatos",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Servidor Local"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Faz login do usuário",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registra um novo usuário",
+                "operationId": "8e4e3cb7b46126f4696379d3c7eeb4ad",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Senha do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Usuário registrado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/contatos": {
+            "get": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Lista todos os contatos",
+                "operationId": "6a23b4f14e70fee8b388d1d66c0c8722",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Termo de pesquisa para filtrar contatos pelo nome",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de contatos retornada com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Cria um novo contato",
+                "operationId": "b430c1af398ebf059b6b531e47e17157",
+                "parameters": [
+                    {
+                        "name": "nome",
+                        "in": "query",
+                        "description": "Nome do contato",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "telefone",
+                        "in": "query",
+                        "description": "Telefone do contato",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email do contato",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "favorito",
+                        "in": "query",
+                        "description": "Indica se o contato é favorito",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Contato criado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/contatos/{contato}": {
+            "get": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Exibe um contato",
+                "operationId": "a23513ae38e5f1bf8ee78b337b4c5a29",
+                "parameters": [
+                    {
+                        "name": "contato",
+                        "in": "path",
+                        "description": "ID do contato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contato retornado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Atualiza um contato",
+                "operationId": "6763c4c6c6699a89951cddeb482774d9",
+                "parameters": [
+                    {
+                        "name": "contato",
+                        "in": "path",
+                        "description": "ID do contato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "nome",
+                        "in": "query",
+                        "description": "Nome do contato",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "telefone",
+                        "in": "query",
+                        "description": "Telefone do contato",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email do contato",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "favorito",
+                        "in": "query",
+                        "description": "Indica se o contato é favorito",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contato atualizado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Remove um contato",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "01c24a01b8c4af905993f7b577efde7b",
+                "parameters": [
+                    {
+                        "name": "contato",
+                        "in": "path",
+                        "description": "ID do contato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contato removido com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/contatos/{contato}/favorito": {
+            "patch": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Atualiza o status de favorito de um contato",
+                "operationId": "00a03b7b08effabc8c38bbabf4a93719",
+                "parameters": [
+                    {
+                        "name": "contato",
+                        "in": "path",
+                        "description": "ID do contato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "favorito",
+                        "in": "query",
+                        "description": "Indica se o contato é favorito",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status de favorito atualizado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Autenticação via Laravel Sanctum. O frontend usa sessão de SPA (cookie + CSRF); integrações externas podem usar um token pessoal no formato: Bearer <token>.",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Contatos",
+            "description": "Contatos"
+        }
+    ]
+}

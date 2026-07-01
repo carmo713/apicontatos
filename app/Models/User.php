@@ -32,7 +32,7 @@ class User extends Authenticatable
         ];
     }
 
-    protected function contacts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function contacts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Contato::class);
     }
