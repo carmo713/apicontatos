@@ -40,7 +40,7 @@ class AuthController extends Controller
            'token' => $request->user()->createToken('auth_token')->plainTextToken,  
             ]);
         }
-        return response()->json('Not Authorized', 403);
+        return response()->json('Not Authorized', 401);
     }
 
     #[OA\Post(

@@ -36,4 +36,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Contato::class);
     }
+    public function exports()
+    {
+        return $this->hasMany(Export::class);
+    }
 }

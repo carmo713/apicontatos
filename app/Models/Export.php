@@ -4,20 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Contato extends Model
+class Export extends Model
 {
     protected $fillable = [
         'user_id',
-        'nome',
-        'telefone',
-        'email',
-        'favorito',
+        'format',
+        'file_name',
+        'file_path',
+        'status',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
     
 }

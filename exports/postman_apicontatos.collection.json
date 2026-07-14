@@ -1,0 +1,123 @@
+{
+  "info": {
+    "name": "apicontatos API",
+    "_postman_id": "apicontatos-collection",
+    "description": "Coleção Postman para a API de contatos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar Contatos",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/contatos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contatos"],
+          "query": [
+            { "key": "search", "value": "" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Criar Contato",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Nome Exemplo\",\n  \"telefone\": \"+5511999999999\",\n  \"email\": \"exemplo@dominio.com\",\n  \"favorito\": false\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/contatos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contatos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ver Contato",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/contatos/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contatos", ":id"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualizar Contato",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Nome Atualizado\",\n  \"telefone\": \"+5511988888888\",\n  \"email\": \"novo@dominio.com\",\n  \"favorito\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/contatos/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contatos", ":id"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Remover Contato",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/contatos/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contatos", ":id"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Alternar Favorito",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/contatos/:id/favorito",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contatos", ":id", "favorito"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000" },
+    { "key": "token", "value": "" }
+  ]
+}

@@ -20,8 +20,43 @@ class ContatoController extends Controller
                 required: false,
                 description: "Termo de pesquisa para filtrar contatos pelo nome",
                 schema: new OA\Schema(type: "string")
-            )
-            
+            ),
+            new OA\Parameter(
+                name: "telefone",
+                in: "query",
+                required: false,
+                description: "Buscar pelo telefone",
+                schema: new OA\Schema(type: "string")
+            ),
+            new OA\Parameter(
+                name: "favorito",
+                in: "query",
+                required: false,
+                description: "Filtrar favoritos",
+                schema: new OA\Schema(type: "boolean")
+            ),
+            new OA\Parameter(
+                name: "sort",
+                in: "query",
+                required: false,
+                description: "Ordenar por nome ou created_at",
+                schema: new OA\Schema(type: "string")
+            ),
+            new OA\Parameter(
+                name: "direction",
+                in: "query",
+                required: false,
+                description: "asc ou desc",
+                schema: new OA\Schema(type: "string")
+            ),
+            new OA\Parameter(
+                name: "per_page",
+                in: "query",
+                required: false,
+                description: "Quantidade de registros por página",
+                schema: new OA\Schema(type: "integer")
+            ),
+
         ],
         tags: ["Contatos"],
     )]
@@ -31,15 +66,42 @@ class ContatoController extends Controller
     {
         $query = auth()->user()->contacts();
 
-        if ($request->has('search')) {
-            $query->where('nome', 'like', '%' . $request->search . '%');
+        // Buscar por nome
+        $query->when($request->nome, function ($q) use ($request) {
+            $q->where('nome', 'like', '%' . $request->nome . '%');
+        });
+
+        // Buscar por telefone
+        $query->when($request->telefone, function ($q) use ($request) {
+            $q->where('telefone', 'like', '%' . $request->telefone . '%');
+        });
+
+
+        // Filtrar favoritos
+        $query->when($request->filled('favorito'), function ($q) use ($request) {
+            $q->where('favorito', $request->boolean('favorito'));
+        });
+
+        // Ordenação
+        $sort = $request->get('sort', 'nome');
+
+        if (!in_array($sort, ['nome', 'created_at'])) {
+            $sort = 'nome';
         }
 
-        return $query
-            ->orderBy('nome')
-            ->get();
-    }
+        $direction = strtolower($request->get('direction', 'asc'));
 
+        if (!in_array($direction, ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+
+        $query->orderBy($sort, $direction);
+
+        // Paginação
+        $perPage = $request->get('per_page', 10);
+
+        return $query->paginate($perPage);
+    }
     #[OA\Post(
         path: "/api/contatos",
         summary: "Cria um novo contato",
@@ -109,8 +171,7 @@ class ContatoController extends Controller
                 description: "ID do contato",
                 schema: new OA\Schema(type: "integer")
             )
-        ]
-        ,
+        ],
         security: [["sanctum" => []]],
         tags: ["Contatos"],
     )]
@@ -248,7 +309,7 @@ class ContatoController extends Controller
                 required: true,
                 description: "ID do contato",
                 schema: new OA\Schema(type: "integer")
-            ), 
+            ),
             new OA\Parameter(
                 name: "favorito",
                 in: "query",
