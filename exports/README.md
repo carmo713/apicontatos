@@ -1,6 +1,6 @@
 Coleção de exportação para Postman
 
-- Arquivo: postman_apicontatos.collection.json
+- Arquivo: postman_apiContacts.collection.json
 
 Como usar
 
@@ -14,5 +14,5 @@ Variáveis
 
 Notas
 
-- Endpoints contemplados: GET /api/contatos, POST /api/contatos, GET/PUT/DELETE /api/contatos/:id, PATCH /api/contatos/:id/favorito
+- Endpoints contemplados: GET /api/Contacts, POST /api/Contacts, GET/PUT/DELETE /api/Contacts/:id, PATCH /api/Contacts/:id/favorite
 - Ajuste `baseUrl` e preencha `token` antes de testar.

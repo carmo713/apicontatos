@@ -3,43 +3,43 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contato;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
-class ContatoController extends Controller
+class ContactController extends Controller
 {
     #[OA\Get(
-        path: "/api/contatos",
-        summary: "Lista todos os contatos",
+        path: "/api/contacts",
+        summary: "Lista todos os Contacts",
         security: [["sanctum" => []]],
         parameters: [
             new OA\Parameter(
                 name: "search",
                 in: "query",
                 required: false,
-                description: "Termo de pesquisa para filtrar contatos pelo nome",
+                description: "Termo de pesquisa para filtrar Contacts pelo name",
                 schema: new OA\Schema(type: "string")
             ),
             new OA\Parameter(
-                name: "telefone",
+                name: "phone",
                 in: "query",
                 required: false,
-                description: "Buscar pelo telefone",
+                description: "Buscar pelo phone",
                 schema: new OA\Schema(type: "string")
             ),
             new OA\Parameter(
-                name: "favorito",
+                name: "favorite",
                 in: "query",
                 required: false,
-                description: "Filtrar favoritos",
+                description: "Filtrar favorites",
                 schema: new OA\Schema(type: "boolean")
             ),
             new OA\Parameter(
                 name: "sort",
                 in: "query",
                 required: false,
-                description: "Ordenar por nome ou created_at",
+                description: "Ordenar por name ou created_at",
                 schema: new OA\Schema(type: "string")
             ),
             new OA\Parameter(
@@ -58,35 +58,35 @@ class ContatoController extends Controller
             ),
 
         ],
-        tags: ["Contatos"],
+        tags: ["Contacts"],
     )]
-    #[OA\Response(response: 200, description: "Lista de contatos retornada com sucesso")]
+    #[OA\Response(response: 200, description: "Lista de Contacts retornada com sucesso")]
 
     public function index(Request $request)
     {
         $query = auth()->user()->contacts();
 
-        // Buscar por nome
-        $query->when($request->nome, function ($q) use ($request) {
-            $q->where('nome', 'like', '%' . $request->nome . '%');
+        // Buscar por name
+        $query->when($request->name, function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->name . '%');
         });
 
-        // Buscar por telefone
-        $query->when($request->telefone, function ($q) use ($request) {
-            $q->where('telefone', 'like', '%' . $request->telefone . '%');
+        // Buscar por phone
+        $query->when($request->phone, function ($q) use ($request) {
+            $q->where('phone', 'like', '%' . $request->phone . '%');
         });
 
 
-        // Filtrar favoritos
-        $query->when($request->filled('favorito'), function ($q) use ($request) {
-            $q->where('favorito', $request->boolean('favorito'));
+        // Filtrar favorites
+        $query->when($request->filled('favorite'), function ($q) use ($request) {
+            $q->where('favorite', $request->boolean('favorite'));
         });
 
         // Ordenação
-        $sort = $request->get('sort', 'nome');
+        $sort = $request->get('sort', 'name');
 
-        if (!in_array($sort, ['nome', 'created_at'])) {
-            $sort = 'nome';
+        if (!in_array($sort, ['name', 'created_at'])) {
+            $sort = 'name';
         }
 
         $direction = strtolower($request->get('direction', 'asc'));
@@ -103,119 +103,119 @@ class ContatoController extends Controller
         return $query->paginate($perPage);
     }
     #[OA\Post(
-        path: "/api/contatos",
-        summary: "Cria um novo contato",
+        path: "/api/contacts",
+        summary: "Cria um novo Contact",
         parameters: [
             new OA\Parameter(
-                name: "nome",
+                name: "name",
                 in: "query",
                 required: true,
-                description: "Nome do contato",
+                description: "name do Contact",
                 schema: new OA\Schema(type: "string")
             ),
             new OA\Parameter(
-                name: "telefone",
+                name: "phone",
                 in: "query",
                 required: true,
-                description: "Telefone do contato",
+                description: "phone do Contact",
                 schema: new OA\Schema(type: "string")
             ),
             new OA\Parameter(
                 name: "email",
                 in: "query",
                 required: true,
-                description: "Email do contato",
+                description: "Email do Contact",
                 schema: new OA\Schema(type: "string")
             ),
             new OA\Parameter(
-                name: "favorito",
+                name: "favorite",
                 in: "query",
                 required: false,
-                description: "Indica se o contato é favorito",
+                description: "Indica se o Contact é favorite",
                 schema: new OA\Schema(type: "boolean")
             )
         ],
         security: [["sanctum" => []]],
-        tags: ["Contatos"],
+        tags: ["Contacts"],
     )]
-    #[OA\Response(response: 201, description: "Contato criado com sucesso")]
+    #[OA\Response(response: 201, description: "Contact criado com sucesso")]
 
     public function store(Request $request)
     {
         $request->merge([
-            'favorito' => $request->has('favorito')
-                ? $request->boolean('favorito')
+            'favorite' => $request->has('favorite')
+                ? $request->boolean('favorite')
                 : false,
         ]);
 
         $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'telefone' => 'required|string|max:20',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
             'email' => 'required|string|email|max:255',
-            'favorito' => 'boolean',
+            'favorite' => 'boolean',
         ]);
 
-        $contato = auth()->user()->contacts()->create($validated);
+        $contact = auth()->user()->contacts()->create($validated);
 
-        return response()->json($contato, 201);
+        return response()->json($contact, 201);
     }
 
     #[OA\Get(
-        path: "/api/contatos/{contato}",
-        summary: "Exibe um contato",
+        path: "/api/contacts/{Contact}",
+        summary: "Exibe um Contact",
         parameters: [
             new OA\Parameter(
-                name: "contato",
+                name: "Contact",
                 in: "path",
                 required: true,
-                description: "ID do contato",
+                description: "ID do Contact",
                 schema: new OA\Schema(type: "integer")
             )
         ],
         security: [["sanctum" => []]],
-        tags: ["Contatos"],
+        tags: ["Contacts"],
     )]
-    #[OA\Response(response: 200, description: "Contato retornado com sucesso")]
+    #[OA\Response(response: 200, description: "Contact retornado com sucesso")]
 
 
-    public function show(Contato $contato)
+    public function show(Contact $contact)
     {
         if (
-            $contato->user_id
+            $contact->user_id
             != auth()->id()
         ) {
-            abort(403);
+            abort(404);
         }
 
-        return $contato;
+        return $contact;
     }
 
 
     #[OA\Put(
-        path: "/api/contatos/{contato}",
-        summary: "Atualiza um contato",
+        path: "/api/contacts/{Contact}",
+        summary: "Atualiza um Contact",
         parameters: [
             new OA\Parameter(
-                name: "contato",
+                name: "Contact",
                 in: "path",
                 required: true,
-                description: "ID do contato",
+                description: "ID do Contact",
                 schema: new OA\Schema(type: "integer")
             ),
 
             new OA\Parameter(
-                name: "nome",
+                name: "name",
                 in: "query",
                 required: false,
-                description: "Nome do contato",
+                description: "name do Contact",
                 schema: new OA\Schema(type: "string")
             ),
 
             new OA\Parameter(
-                name: "telefone",
+                name: "phone",
                 in: "query",
                 required: false,
-                description: "Telefone do contato",
+                description: "phone do Contact",
                 schema: new OA\Schema(type: "string")
             ),
 
@@ -223,119 +223,108 @@ class ContatoController extends Controller
                 name: "email",
                 in: "query",
                 required: false,
-                description: "Email do contato",
+                description: "Email do Contact",
                 schema: new OA\Schema(type: "string")
             ),
 
             new OA\Parameter(
-                name: "favorito",
+                name: "favorite",
                 in: "query",
                 required: false,
-                description: "Indica se o contato é favorito",
+                description: "Indica se o Contact é favorite",
                 schema: new OA\Schema(type: "boolean")
             )
         ],
         security: [["sanctum" => []]],
-        tags: ["Contatos"],
+        tags: ["Contacts"],
     )]
-    #[OA\Response(response: 200, description: "Contato atualizado com sucesso")]
+    #[OA\Response(response: 200, description: "Contact atualizado com sucesso")]
 
-    public function update(Request $request, Contato $contato)
+    public function update(Request $request, Contact $contact)
     {
 
         $request->merge([
-            'favorito' => $request->has('favorito')
-                ? $request->boolean('favorito')
+            'favorite' => $request->has('favorite')
+                ? $request->boolean('favorite')
                 : false,
         ]);
 
         $validated = $request->validate([
-            'nome' => 'string|max:255',
-            'telefone' => 'string|max:20',
+            'name' => 'string|max:255',
+            'phone' => 'string|max:20',
             'email' => 'string|email|max:255',
-            'favorito' => 'boolean',
+            'favorite' => 'boolean',
         ]);
 
-        if ($contato->user_id != auth()->id()) {
-            abort(403);
+        if ($contact->user_id != auth()->id()) {
+            abort(404);
         }
 
-        $contato->update(
+        $contact->update(
             $validated
         );
 
-        return $contato;
+        return $contact;
     }
 
     /**
      * Remove the specified resource from storage.
      */
     #[OA\Delete(
-        path: "/api/contatos/{contato}",
-        summary: "Remove um contato",
+        path: "/api/contacts/{Contact}",
+        summary: "Remove um Contact",
         parameters: [
             new OA\Parameter(
-                name: "contato",
+                name: "Contact",
                 in: "path",
                 required: true,
-                description: "ID do contato",
+                description: "ID do Contact",
                 schema: new OA\Schema(type: "integer")
             )
         ],
         security: [["sanctum" => []]],
-        tags: ["Contatos"],
+        tags: ["Contacts"],
     )]
-    #[OA\Response(response: 200, description: "Contato removido com sucesso")]
-    public function destroy(Contato $contato)
+    #[OA\Response(response: 204, description: "Contact removido com sucesso")]
+    public function destroy(Contact $contact)
     {
-        if ($contato->user_id != auth()->id()) {
-            abort(403);
+        if ($contact->user_id != auth()->id()) {
+            abort(404);
         }
 
-        $contato->delete();
+        $contact->delete();
 
-        return response()->json([
-            'message' => 'Removido'
-        ]);
+        return response()->noContent();
     }
 
     #[OA\Patch(
-        path: "/api/contatos/{contato}/favorito",
-        summary: "Atualiza o status de favorito de um contato",
-        parameters: [
+        path: "/api/contacts/{Contact}/favorite",
+        summary: "Atualiza o status de favorite de um Contact",
+         parameters: [
             new OA\Parameter(
-                name: "contato",
+                name: "Contact",
                 in: "path",
                 required: true,
-                description: "ID do contato",
+                description: "ID do Contact",
                 schema: new OA\Schema(type: "integer")
             ),
-            new OA\Parameter(
-                name: "favorito",
-                in: "query",
-                required: true,
-                description: "Indica se o contato é favorito",
-                schema: new OA\Schema(type: "boolean")
-            )
         ],
         security: [["sanctum" => []]],
-        tags: ["Contatos"],
+        tags: ["Contacts"],
     )]
-    #[OA\Response(response: 200, description: "Status de favorito atualizado com sucesso")]
-    public function favorito(Contato $contato)
+    #[OA\Response(response: 200, description: "Status de favorite atualizado com sucesso")]
+    public function favorite(Contact $contact)
     {
-
-        if ($contato->user_id != auth()->id()) {
-            abort(403);
+        if ($contact->user_id != auth()->id()) {
+            abort(404);
         }
 
-        $contato->favorito = !$contato->favorito;
-        $contato->save();
-
+        $contact->favorite = !$contact->favorite;
+        $contact->save();
 
         return response()->json([
-            'message' => 'Status de favorito atualizado.',
-            'favorito' => $contato->favorito
+            'message' => 'Status de favorite atualizado.',
+            'favorite' => $contact->favorite
         ], 200);
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ContatoResource;
-use App\Models\Contato;
+use App\Http\Resources\ContactResource;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
@@ -25,22 +25,22 @@ class DashboardController extends Controller
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "total_contatos",
+                            property: "total_Contacts",
                             type: "integer",
                             example: 15
                         ),
                         new OA\Property(
-                            property: "total_favoritos",
+                            property: "total_favorites",
                             type: "integer",
                             example: 6
                         ),
                         new OA\Property(
-                            property: "contatos_mes",
+                            property: "Contacts_mes",
                             type: "integer",
                             example: 3
                         ),
                         new OA\Property(
-                            property: "ultimos_contatos",
+                            property: "ultimos_Contacts",
                             type: "array",
                             items: new OA\Items(
                                 properties: [
@@ -50,12 +50,12 @@ class DashboardController extends Controller
                                         example: 20
                                     ),
                                     new OA\Property(
-                                        property: "nome",
+                                        property: "name",
                                         type: "string",
                                         example: "Carlos"
                                     ),
                                     new OA\Property(
-                                        property: "telefone",
+                                        property: "phone",
                                         type: "string",
                                         example: "(38)99999-9999"
                                     ),
@@ -70,7 +70,7 @@ class DashboardController extends Controller
                                         example: "Empresa X"
                                     ),
                                     new OA\Property(
-                                        property: "favorito",
+                                        property: "favorite",
                                         type: "boolean",
                                         example: true
                                     ),
@@ -96,28 +96,28 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $totalContatos = Contato::where('user_id', $user->id)
+        $totalContacts = Contact::where('user_id', $user->id)
             ->count();
 
-        $totalFavoritos = Contato::where('user_id', $user->id)
-            ->where('favorito', true)
+        $totalfavorites = Contact::where('user_id', $user->id)
+            ->where('favorite', true)
             ->count();
 
-        $contatosMes = Contato::where('user_id', $user->id)
+        $ContactsMes = Contact::where('user_id', $user->id)
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
 
-        $ultimosContatos = Contato::where('user_id', $user->id)
+        $ultimosContacts = Contact::where('user_id', $user->id)
             ->latest()
             ->take(5)
             ->get();
 
         return response()->json([
-            'total_contatos' => $totalContatos,
-            'total_favoritos' => $totalFavoritos,
-            'contatos_mes' => $contatosMes,
-            'ultimos_contatos' => ContatoResource::collection($ultimosContatos),
+            'total_Contacts' => $totalContacts,
+            'favorites' => $totalfavorites,
+            'mes' => $ContactsMes,
+            'ultimos' => ContactResource::collection($ultimosContacts),
         ]);
     }
 }

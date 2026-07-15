@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Contato;
+use App\Models\Contact;
 use App\Models\Export;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -32,22 +32,22 @@ class GenerateContactsExport implements ShouldQueue
                 'status' => 'Processando'
             ]);
 
-            $contacts = Contato::where(
+            $contacts = Contact::where(
                 'user_id',
                 $this->export->user_id
             )->get();
 
-            $content = "Nome,E-mail,Telefone\n";
+            $content = "name,E-mail,phone\n";
 
             foreach ($contacts as $contact) {
 
                 $content .=
-                    "{$contact->nome},"
+                    "{$contact->name},"
                     . "{$contact->email},"
-                    . "{$contact->telefone}\n";
+                    . "{$contact->phone}\n";
             }
 
-            $fileName = "contatos_" . time() . ".csv";
+            $fileName = "Contacts_" . time() . ".csv";
 
             Storage::put(
                 "exports/" . $fileName,
@@ -56,7 +56,7 @@ class GenerateContactsExport implements ShouldQueue
 
             $this->export->update([
                 'status' => 'Concluído',
-                'nome_arquivo' => $fileName,
+                'name_arquivo' => $fileName,
                 'caminho_arquivo' => "exports/" . $fileName
             ]);
         } catch (\Exception $e) {

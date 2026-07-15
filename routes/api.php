@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ContatoController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExportController;
@@ -12,9 +12,10 @@ Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']
 
 
 Route::middleware('auth:sanctum')->group(function () {
-   Route::post('/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
-   Route::apiResource('contatos', ContatoController::class);
-   Route::patch('contatos/{contato}/favorito', [ContatoController::class, 'favorito']);
+   Route::apiResource('contacts', ContactController::class);
+
+   Route::post('/logout', [AuthController::class, 'logout']);
+   Route::patch('contacts/{contact}/favorite', [ContactController::class, 'favorite']);
    Route::get('/dashboard', [\App\Http\Controllers\Api\DashboardController::class, 'index']);
    Route::post(
       '/exports',

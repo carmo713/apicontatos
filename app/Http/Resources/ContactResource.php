@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContatoResource extends JsonResource
+class ContactResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,10 @@ class ContatoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'nome' => $this->nome,
-            'telefone' => $this->telefone,
+            'name' => $this->name,
+            'phone' => $this->phone,
             'email' => $this->email,
-            'favorito' => $this->favorito,
+            'favorite' => $this->favorite,
         ];
     }
 }

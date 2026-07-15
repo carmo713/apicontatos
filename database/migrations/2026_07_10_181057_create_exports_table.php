@@ -23,7 +23,7 @@ return new class extends Migration
                 'xlsx',
                 'pdf'
             ]);
-            $table->string('nome_arquivo')->nullable();
+            $table->string('name_arquivo')->nullable();
             $table->string('status')->default('Pendente');
             $table->string('caminho_arquivo')->nullable();
             $table->timestamps();

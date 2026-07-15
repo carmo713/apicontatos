@@ -4,7 +4,7 @@ namespace App;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: "1.0.0", title: "API Agenda de Contatos", description: "Documentação da API de Agenda de Contatos")]
+#[OA\Info(version: "1.0.0", title: "API Agenda de Contacts", description: "Documentação da API de Agenda de Contacts")]
 #[OA\Server(url: "http://127.0.0.1:8000", description: "Servidor Local")]
 #[OA\SecurityScheme(
     securityScheme: 'sanctum',

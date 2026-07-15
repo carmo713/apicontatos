@@ -1,13 +1,13 @@
 {
   "info": {
-    "name": "apicontatos API",
-    "_postman_id": "apicontatos-collection",
-    "description": "Coleção Postman para a API de contatos",
+    "name": "apiContacts API",
+    "_postman_id": "apiContacts-collection",
+    "description": "Coleção Postman para a API de Contacts",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Listar Contatos",
+      "name": "Listar Contacts",
       "request": {
         "method": "GET",
         "header": [
@@ -15,9 +15,9 @@
           { "key": "Accept", "value": "application/json", "type": "text" }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/contatos",
+          "raw": "{{baseUrl}}/api/Contacts",
           "host": ["{{baseUrl}}"],
-          "path": ["api", "contatos"],
+          "path": ["api", "Contacts"],
           "query": [
             { "key": "search", "value": "" }
           ]
@@ -26,7 +26,7 @@
       "response": []
     },
     {
-      "name": "Criar Contato",
+      "name": "Criar Contact",
       "request": {
         "method": "POST",
         "header": [
@@ -36,18 +36,18 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nome\": \"Nome Exemplo\",\n  \"telefone\": \"+5511999999999\",\n  \"email\": \"exemplo@dominio.com\",\n  \"favorito\": false\n}"
+          "raw": "{\n  \"name\": \"name Exemplo\",\n  \"phone\": \"+5511999999999\",\n  \"email\": \"exemplo@dominio.com\",\n  \"favorite\": false\n}"
         },
         "url": {
-          "raw": "{{baseUrl}}/api/contatos",
+          "raw": "{{baseUrl}}/api/Contacts",
           "host": ["{{baseUrl}}"],
-          "path": ["api", "contatos"]
+          "path": ["api", "Contacts"]
         }
       },
       "response": []
     },
     {
-      "name": "Ver Contato",
+      "name": "Ver Contact",
       "request": {
         "method": "GET",
         "header": [
@@ -55,15 +55,15 @@
           { "key": "Accept", "value": "application/json", "type": "text" }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/contatos/:id",
+          "raw": "{{baseUrl}}/api/Contacts/:id",
           "host": ["{{baseUrl}}"],
-          "path": ["api", "contatos", ":id"]
+          "path": ["api", "Contacts", ":id"]
         }
       },
       "response": []
     },
     {
-      "name": "Atualizar Contato",
+      "name": "Atualizar Contact",
       "request": {
         "method": "PUT",
         "header": [
@@ -73,18 +73,18 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nome\": \"Nome Atualizado\",\n  \"telefone\": \"+5511988888888\",\n  \"email\": \"novo@dominio.com\",\n  \"favorito\": true\n}"
+          "raw": "{\n  \"name\": \"name Atualizado\",\n  \"phone\": \"+5511988888888\",\n  \"email\": \"novo@dominio.com\",\n  \"favorite\": true\n}"
         },
         "url": {
-          "raw": "{{baseUrl}}/api/contatos/:id",
+          "raw": "{{baseUrl}}/api/Contacts/:id",
           "host": ["{{baseUrl}}"],
-          "path": ["api", "contatos", ":id"]
+          "path": ["api", "Contacts", ":id"]
         }
       },
       "response": []
     },
     {
-      "name": "Remover Contato",
+      "name": "Remover Contact",
       "request": {
         "method": "DELETE",
         "header": [
@@ -92,15 +92,15 @@
           { "key": "Accept", "value": "application/json", "type": "text" }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/contatos/:id",
+          "raw": "{{baseUrl}}/api/Contacts/:id",
           "host": ["{{baseUrl}}"],
-          "path": ["api", "contatos", ":id"]
+          "path": ["api", "Contacts", ":id"]
         }
       },
       "response": []
     },
     {
-      "name": "Alternar Favorito",
+      "name": "Alternar favorite",
       "request": {
         "method": "PATCH",
         "header": [
@@ -108,9 +108,9 @@
           { "key": "Accept", "value": "application/json", "type": "text" }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/contatos/:id/favorito",
+          "raw": "{{baseUrl}}/api/Contacts/:id/favorite",
           "host": ["{{baseUrl}}"],
-          "path": ["api", "contatos", ":id", "favorito"]
+          "path": ["api", "Contacts", ":id", "favorite"]
         }
       },
       "response": []

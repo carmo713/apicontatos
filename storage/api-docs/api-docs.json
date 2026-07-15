@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Agenda de Contatos",
-        "description": "Documentação da API de Agenda de Contatos",
+        "title": "API Agenda de Contacts",
+        "description": "Documentação da API de Agenda de Contacts",
         "version": "1.0.0"
     },
     "servers": [
@@ -57,7 +57,7 @@
                     {
                         "name": "name",
                         "in": "query",
-                        "description": "Nome do usuário",
+                        "description": "name do usuário",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -94,36 +94,58 @@
                 ]
             }
         },
-        "/api/contatos": {
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Realiza logout do usuário autenticado",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Logout realizado com sucesso"
+                    },
+                    "401": {
+                        "description": "Usuário não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/contacts": {
             "get": {
                 "tags": [
-                    "Contatos"
+                    "Contacts"
                 ],
-                "summary": "Lista todos os contatos",
-                "operationId": "6a23b4f14e70fee8b388d1d66c0c8722",
+                "summary": "Lista todos os Contacts",
+                "operationId": "bc39494d59500e2d75e6f6648b43c8de",
                 "parameters": [
                     {
                         "name": "search",
                         "in": "query",
-                        "description": "Termo de pesquisa para filtrar contatos pelo nome",
+                        "description": "Termo de pesquisa para filtrar Contacts pelo name",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "telefone",
+                        "name": "phone",
                         "in": "query",
-                        "description": "Buscar pelo telefone",
+                        "description": "Buscar pelo phone",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "favorito",
+                        "name": "favorite",
                         "in": "query",
-                        "description": "Filtrar favoritos",
+                        "description": "Filtrar favorites",
                         "required": false,
                         "schema": {
                             "type": "boolean"
@@ -132,7 +154,7 @@
                     {
                         "name": "sort",
                         "in": "query",
-                        "description": "Ordenar por nome ou created_at",
+                        "description": "Ordenar por name ou created_at",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -159,7 +181,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista de contatos retornada com sucesso"
+                        "description": "Lista de Contacts retornada com sucesso"
                     }
                 },
                 "security": [
@@ -170,24 +192,24 @@
             },
             "post": {
                 "tags": [
-                    "Contatos"
+                    "Contacts"
                 ],
-                "summary": "Cria um novo contato",
-                "operationId": "b430c1af398ebf059b6b531e47e17157",
+                "summary": "Cria um novo Contact",
+                "operationId": "779a1f2268bae1138e7ea7843dd88d90",
                 "parameters": [
                     {
-                        "name": "nome",
+                        "name": "name",
                         "in": "query",
-                        "description": "Nome do contato",
+                        "description": "name do Contact",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "telefone",
+                        "name": "phone",
                         "in": "query",
-                        "description": "Telefone do contato",
+                        "description": "phone do Contact",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -196,16 +218,16 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "Email do contato",
+                        "description": "Email do Contact",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "favorito",
+                        "name": "favorite",
                         "in": "query",
-                        "description": "Indica se o contato é favorito",
+                        "description": "Indica se o Contact é favorite",
                         "required": false,
                         "schema": {
                             "type": "boolean"
@@ -214,7 +236,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "Contato criado com sucesso"
+                        "description": "Contact criado com sucesso"
                     }
                 },
                 "security": [
@@ -224,18 +246,18 @@
                 ]
             }
         },
-        "/api/contatos/{contato}": {
+        "/api/contacts/{Contact}": {
             "get": {
                 "tags": [
-                    "Contatos"
+                    "Contacts"
                 ],
-                "summary": "Exibe um contato",
-                "operationId": "a23513ae38e5f1bf8ee78b337b4c5a29",
+                "summary": "Exibe um Contact",
+                "operationId": "d0d60696adc4804f953f5b3e37407048",
                 "parameters": [
                     {
-                        "name": "contato",
+                        "name": "Contact",
                         "in": "path",
-                        "description": "ID do contato",
+                        "description": "ID do Contact",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -244,7 +266,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Contato retornado com sucesso"
+                        "description": "Contact retornado com sucesso"
                     }
                 },
                 "security": [
@@ -255,33 +277,33 @@
             },
             "put": {
                 "tags": [
-                    "Contatos"
+                    "Contacts"
                 ],
-                "summary": "Atualiza um contato",
-                "operationId": "6763c4c6c6699a89951cddeb482774d9",
+                "summary": "Atualiza um Contact",
+                "operationId": "3c4aae286067269fe8c8b3162c0059d1",
                 "parameters": [
                     {
-                        "name": "contato",
+                        "name": "Contact",
                         "in": "path",
-                        "description": "ID do contato",
+                        "description": "ID do Contact",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     },
                     {
-                        "name": "nome",
+                        "name": "name",
                         "in": "query",
-                        "description": "Nome do contato",
+                        "description": "name do Contact",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "telefone",
+                        "name": "phone",
                         "in": "query",
-                        "description": "Telefone do contato",
+                        "description": "phone do Contact",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -290,16 +312,16 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "Email do contato",
+                        "description": "Email do Contact",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "favorito",
+                        "name": "favorite",
                         "in": "query",
-                        "description": "Indica se o contato é favorito",
+                        "description": "Indica se o Contact é favorite",
                         "required": false,
                         "schema": {
                             "type": "boolean"
@@ -308,7 +330,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Contato atualizado com sucesso"
+                        "description": "Contact atualizado com sucesso"
                     }
                 },
                 "security": [
@@ -319,16 +341,16 @@
             },
             "delete": {
                 "tags": [
-                    "Contatos"
+                    "Contacts"
                 ],
-                "summary": "Remove um contato",
+                "summary": "Remove um Contact",
                 "description": "Remove the specified resource from storage.",
-                "operationId": "01c24a01b8c4af905993f7b577efde7b",
+                "operationId": "96ed7c648f93c6e4a2f97abb672b9abc",
                 "parameters": [
                     {
-                        "name": "contato",
+                        "name": "Contact",
                         "in": "path",
-                        "description": "ID do contato",
+                        "description": "ID do Contact",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -336,8 +358,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Contato removido com sucesso"
+                    "204": {
+                        "description": "Contact removido com sucesso"
                     }
                 },
                 "security": [
@@ -347,27 +369,27 @@
                 ]
             }
         },
-        "/api/contatos/{contato}/favorito": {
+        "/api/contacts/{Contact}/favorite": {
             "patch": {
                 "tags": [
-                    "Contatos"
+                    "Contacts"
                 ],
-                "summary": "Atualiza o status de favorito de um contato",
-                "operationId": "00a03b7b08effabc8c38bbabf4a93719",
+                "summary": "Atualiza o status de favorite de um Contact",
+                "operationId": "c7995e8033cef9111bb944cc47af9e4e",
                 "parameters": [
                     {
-                        "name": "contato",
+                        "name": "Contact",
                         "in": "path",
-                        "description": "ID do contato",
+                        "description": "ID do Contact",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     },
                     {
-                        "name": "favorito",
+                        "name": "favorite",
                         "in": "query",
-                        "description": "Indica se o contato é favorito",
+                        "description": "Indica se o Contact é favorite",
                         "required": true,
                         "schema": {
                             "type": "boolean"
@@ -376,7 +398,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Status de favorito atualizado com sucesso"
+                        "description": "Status de favorite atualizado com sucesso"
                     }
                 },
                 "security": [
@@ -401,19 +423,19 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "total_contatos": {
+                                        "total_Contacts": {
                                             "type": "integer",
                                             "example": 15
                                         },
-                                        "total_favoritos": {
+                                        "total_favorites": {
                                             "type": "integer",
                                             "example": 6
                                         },
-                                        "contatos_mes": {
+                                        "Contacts_mes": {
                                             "type": "integer",
                                             "example": 3
                                         },
-                                        "ultimos_contatos": {
+                                        "ultimos_Contacts": {
                                             "type": "array",
                                             "items": {
                                                 "properties": {
@@ -421,11 +443,11 @@
                                                         "type": "integer",
                                                         "example": 20
                                                     },
-                                                    "nome": {
+                                                    "name": {
                                                         "type": "string",
                                                         "example": "Carlos"
                                                     },
-                                                    "telefone": {
+                                                    "phone": {
                                                         "type": "string",
                                                         "example": "(38)99999-9999"
                                                     },
@@ -437,7 +459,7 @@
                                                         "type": "string",
                                                         "example": "Empresa X"
                                                     },
-                                                    "favorito": {
+                                                    "favorite": {
                                                         "type": "boolean",
                                                         "example": true
                                                     },
@@ -489,7 +511,7 @@
                 "tags": [
                     "Exportações"
                 ],
-                "summary": "Solicita uma nova exportação de contatos",
+                "summary": "Solicita uma nova exportação de Contacts",
                 "operationId": "d729cf8e078f61999ccf50d4359d8de3",
                 "requestBody": {
                     "required": true,
@@ -617,8 +639,8 @@
             "description": "Auth"
         },
         {
-            "name": "Contatos",
-            "description": "Contatos"
+            "name": "Contacts",
+            "description": "Contacts"
         },
         {
             "name": "Dashboard",

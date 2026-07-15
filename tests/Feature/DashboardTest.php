@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Contato;
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,7 +20,7 @@ class DashboardTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        Contato::factory()->count(8)->create([
+        Contact::factory()->count(8)->create([
 
             'user_id' => $user->id
 
@@ -32,9 +32,9 @@ class DashboardTest extends TestCase
 
         $response->assertJsonStructure([
 
-            'total_contatos',
+            'total_Contacts',
 
-            'favoritos',
+            'favorites',
 
             'mes',
 

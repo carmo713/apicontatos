@@ -24,8 +24,8 @@ class StoreContactRequest extends FormRequest
     {
         return [
 
-            'nome' => 'required',
-            'telefone' => 'nullable',
+            'name' => 'required',
+            'phone' => 'nullable',
             'email' => 'nullable|email'
         ];
     }
@@ -33,11 +33,11 @@ class StoreContactRequest extends FormRequest
     {
         $validator->after(function ($validator) {
 
-            if (!$this->telefone && !$this->email) {
+            if (!$this->phone && !$this->email) {
 
                 $validator->errors()->add(
-                    'telefone',
-                    'Informe telefone ou email.'
+                    'phone',
+                    'Informe phone ou email.'
                 );
             }
         });

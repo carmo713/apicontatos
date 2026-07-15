@@ -33,7 +33,7 @@ class ExportController extends Controller
 
     #[OA\Post(
         path: "/api/exports",
-        summary: "Solicita uma nova exportação de contatos",
+        summary: "Solicita uma nova exportação de Contacts",
         security: [["sanctum" => []]],
         tags: ["Exportações"],
         requestBody: new OA\RequestBody(

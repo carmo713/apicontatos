@@ -6,15 +6,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Contato;
+use App\Models\Contact;
 use Laravel\Sanctum\Sanctum;
 
 class ContactTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_criar_contato()
+    use RefreshDatabase;
+
+
+    public function test_criar_Contact()
     {
         $user = User::factory()->create();
 
@@ -24,7 +24,9 @@ class ContactTest extends TestCase
 
             'name' => 'Maria',
 
-            'telefone' => '38999999999'
+            'phone' => '38999999999',
+
+            'email' => 'maria@example.com'
 
         ]);
 
@@ -37,13 +39,13 @@ class ContactTest extends TestCase
         ]);
     }
 
-    public function test_listar_contatos()
+    public function test_listar_Contacts()
     {
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
 
-        Contato::factory()->count(5)->create([
+        Contact::factory()->count(5)->create([
 
             'user_id' => $user->id
 
@@ -54,13 +56,13 @@ class ContactTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_atualizar_contato()
+    public function test_atualizar_Contact()
     {
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
 
-        $contact = Contato::factory()->create([
+        $contact = Contact::factory()->create([
 
             'user_id' => $user->id
 
@@ -68,7 +70,7 @@ class ContactTest extends TestCase
 
         $response = $this->putJson("/api/contacts/$contact->id", [
 
-            'name' => 'Novo Nome'
+            'name' => 'Novo name'
 
         ]);
 
@@ -76,18 +78,18 @@ class ContactTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
 
-            'name' => 'Novo Nome'
+            'name' => 'Novo name'
 
         ]);
     }
 
-    public function test_excluir_contato()
+    public function test_excluir_Contact()
     {
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
 
-        $contact = Contato::factory()->create([
+        $contact = Contact::factory()->create([
 
             'user_id' => $user->id
 
@@ -103,17 +105,17 @@ class ContactTest extends TestCase
 
         ]);
     }
-    public function test_favoritar_contato()
+    public function test_favoritar_Contact()
     {
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
 
-        $contact = Contato::factory()->create([
+        $contact = Contact::factory()->create([
 
             'user_id' => $user->id,
 
-            'favorito' => false
+            'favorite' => false
 
         ]);
 
@@ -127,17 +129,17 @@ class ContactTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
 
-            'favorito' => true
+            'favorite' => true
 
         ]);
     }
-     public function test_usuario_nao_pode_ver_contato_de_outro_usuario()
+     public function test_usuario_nao_pode_ver_Contact_de_outro_usuario()
     {
         $usuario1 = User::factory()->create();
 
         $usuario2 = User::factory()->create();
 
-        $contact = Contato::factory()->create([
+        $contact = Contact::factory()->create([
             'user_id' => $usuario2->id
         ]);
 

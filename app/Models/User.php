@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Contato;
+use App\Models\Contact;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -34,7 +34,7 @@ class User extends Authenticatable
 
     public function contacts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Contato::class);
+        return $this->hasMany(Contact::class);
     }
     public function exports()
     {
