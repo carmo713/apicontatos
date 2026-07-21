@@ -10,9 +10,9 @@ class Export extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'format',
-        'file_name',
-        'file_path',
+        'formato',
+        'name_arquivo',
+        'caminho_arquivo',
         'status',
     ];
 

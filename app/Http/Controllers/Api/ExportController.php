@@ -151,14 +151,18 @@ class ExportController extends Controller
             $request->user()->id
         )->findOrFail($id);
 
-        if ($export->status != 'Concluído') {
+        if ($export->status != 'Concluído' || empty($export->caminho_arquivo)) {
             return response()->json([
                 'message' => 'Arquivo ainda não está pronto.'
             ], 400);
         }
 
-        return Storage::download(
-            $export->caminho_arquivo
-        );
+        if (!Storage::exists($export->caminho_arquivo)) {
+            return response()->json([
+                'message' => 'Arquivo não encontrado no storage.'
+            ], 404);
+        }
+
+        return Storage::download($export->caminho_arquivo);
     }
 }
