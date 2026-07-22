@@ -146,10 +146,7 @@ class ExportController extends Controller
 
     public function download($id, Request $request)
     {
-        $export = Export::where(
-            'user_id',
-            $request->user()->id
-        )->findOrFail($id);
+        $export = Export::findOrFail($id);
 
         if ($export->status != 'Concluído' || empty($export->caminho_arquivo)) {
             return response()->json([

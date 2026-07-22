@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\ExportReadyMail;
 use App\Models\Contact;
 use App\Models\Export;
 use Illuminate\Bus\Queueable;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Barryvdh\DomPDF\Facade\Pdf; // dompdf
+use Illuminate\Support\Facades\Mail;
 
 class GenerateContactsExport implements ShouldQueue
 {
@@ -95,8 +97,11 @@ class GenerateContactsExport implements ShouldQueue
                 'name_arquivo' => $fileName,
                 'caminho_arquivo' => "exports/" . $fileName
             ]);
+
+            Mail::to($this->export->user->email)->send(new ExportReadyMail($this->export));
         } catch (\Exception $e) {
             Log::error('Falha ao gerar exportação: ' . $e->getMessage(), [
+                'user_email' => $this->export->user->email,
                 'export_id' => $this->export->id,
                 'trace' => $e->getTraceAsString(),
             ]);

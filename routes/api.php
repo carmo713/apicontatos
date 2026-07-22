@@ -32,8 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
       [ExportController::class, 'show']
    );
 
-   Route::get(
+});
+
+ Route::get(
       '/exports/{id}/download',
       [ExportController::class, 'download']
-   );
-});
+   )->name('exports.download');
