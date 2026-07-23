@@ -152,30 +152,23 @@
                         }
                     },
                     {
-                        "name": "sort",
+                        "name": "page",
                         "in": "query",
-                        "description": "Ordenar por name ou created_at",
+                        "description": "Número da página",
                         "required": false,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "direction",
-                        "in": "query",
-                        "description": "asc ou desc",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "default": 1
                         }
                     },
                     {
                         "name": "per_page",
                         "in": "query",
-                        "description": "Quantidade de registros por página",
+                        "description": "Quantidade de contatos por página",
                         "required": false,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "default": 10
                         }
                     }
                 ],
@@ -384,15 +377,6 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "favorite",
-                        "in": "query",
-                        "description": "Indica se o Contact é favorite",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
                         }
                     }
                 ],

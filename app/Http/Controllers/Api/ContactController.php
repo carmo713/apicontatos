@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 class ContactController extends Controller
@@ -36,25 +37,19 @@ class ContactController extends Controller
                 schema: new OA\Schema(type: "boolean")
             ),
             new OA\Parameter(
-                name: "sort",
+                name: "page",
                 in: "query",
                 required: false,
-                description: "Ordenar por name ou created_at",
-                schema: new OA\Schema(type: "string")
+                description: "Número da página",
+                schema: new OA\Schema(type: "integer", default: 1)
             ),
-            new OA\Parameter(
-                name: "direction",
-                in: "query",
-                required: false,
-                description: "asc ou desc",
-                schema: new OA\Schema(type: "string")
-            ),
+
             new OA\Parameter(
                 name: "per_page",
                 in: "query",
                 required: false,
-                description: "Quantidade de registros por página",
-                schema: new OA\Schema(type: "integer")
+                description: "Quantidade de contatos por página",
+                schema: new OA\Schema(type: "integer", default: 10)
             ),
 
         ],
@@ -82,25 +77,11 @@ class ContactController extends Controller
             $q->where('favorite', $request->boolean('favorite'));
         });
 
-        // Ordenação
-        $sort = $request->get('sort', 'name');
+        $perPage = min($request->query('per_page', 10), 100);
 
-        if (!in_array($sort, ['name', 'created_at'])) {
-            $sort = 'name';
-        }
 
-        $direction = strtolower($request->get('direction', 'asc'));
 
-        if (!in_array($direction, ['asc', 'desc'])) {
-            $direction = 'asc';
-        }
-
-        $query->orderBy($sort, $direction);
-
-        // Paginação
-        $perPage = $request->get('per_page', 10);
-
-        return $query->paginate($perPage);
+        return $query->latest()->paginate($perPage);
     }
     #[OA\Post(
         path: "/api/contacts",
@@ -150,8 +131,21 @@ class ContactController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'email' => 'required|string|email|max:255',
+            'phone' => [
+                'nullable',
+                'required_without:email',
+                Rule::unique('contacts')->where(function ($query) use ($request) {
+                    return $query->where('user_id', $request->user()->id);
+                }),
+            ],
+            'email' => [
+                'nullable',
+                'email',
+                'required_without:phone',
+                Rule::unique('contacts')->where(function ($query) use ($request) {
+                    return $query->where('user_id', $request->user()->id);
+                }),
+            ],
             'favorite' => 'boolean',
         ]);
 
@@ -251,8 +245,21 @@ class ContactController extends Controller
 
         $validated = $request->validate([
             'name' => 'string|max:255',
-            'phone' => 'string|max:20',
-            'email' => 'string|email|max:255',
+            'phone' => [
+                'nullable',
+                'required_without:email',
+                Rule::unique('contacts')->where(function ($query) use ($request) {
+                    return $query->where('user_id', $request->user()->id);
+                }),
+            ],
+            'email' => [
+                'nullable',
+                'email',
+                'required_without:phone',
+                Rule::unique('contacts')->where(function ($query) use ($request) {
+                    return $query->where('user_id', $request->user()->id);
+                }),
+            ],
             'favorite' => 'boolean',
         ]);
 
@@ -300,7 +307,7 @@ class ContactController extends Controller
     #[OA\Patch(
         path: "/api/contacts/{Contact}/favorite",
         summary: "Atualiza o status de favorite de um Contact",
-         parameters: [
+        parameters: [
             new OA\Parameter(
                 name: "Contact",
                 in: "path",
